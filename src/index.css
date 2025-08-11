@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Content Management System Design System */
+@layer base {
+  :root {
+    /* CMS Dark Theme */
+    --cms-background: 220 30% 8%;
+    --cms-surface: 220 25% 12%;
+    --cms-surface-elevated: 220 20% 16%;
+    --cms-border: 220 15% 25%;
+    
+    /* Golden Theme */
+    --cms-primary: 45 100% 60%;
+    --cms-primary-dark: 45 100% 45%;
+    --cms-primary-foreground: 220 30% 8%;
+    
+    /* Text Colors */
+    --cms-text-primary: 0 0% 100%;
+    --cms-text-secondary: 220 10% 70%;
+    --cms-text-muted: 220 10% 50%;
+    
+    /* Interactive States */
+    --cms-hover: 220 20% 20%;
+    --cms-active: 220 15% 25%;
+    
+    /* Status Colors */
+    --cms-success: 120 60% 50%;
+    --cms-warning: 45 100% 60%;
+    --cms-error: 0 60% 50%;
+    
+    /* Input & Form */
+    --cms-input-bg: 220 25% 15%;
+    --cms-input-border: 220 15% 30%;
+    --cms-input-focus: 45 100% 60%;
+    
+    /* Sidebar */
+    --cms-sidebar-bg: 220 30% 6%;
+    --cms-sidebar-hover: 220 25% 12%;
+    --cms-sidebar-active: 45 100% 60%;
+    
+    /* Shadow & Effects */
+    --cms-shadow: 0 0% 0%;
+    --cms-glow: 45 100% 60%;
+    
+    --radius: 0.5rem;
+    
+    /* Standard theme compatibility */
+    --background: var(--cms-background);
+    --foreground: var(--cms-text-primary);
+    --card: var(--cms-surface);
+    --card-foreground: var(--cms-text-primary);
+    --primary: var(--cms-primary);
+    --primary-foreground: var(--cms-primary-foreground);
+    --secondary: var(--cms-surface-elevated);
+    --secondary-foreground: var(--cms-text-primary);
+    --muted: var(--cms-surface);
+    --muted-foreground: var(--cms-text-muted);
+    --border: var(--cms-border);
+    --input: var(--cms-input-bg);
+    --ring: var(--cms-primary);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-cms-background text-cms-text-primary;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+
+  /* Animated background stars */
+  .stars-bg {
+    background: linear-gradient(135deg, hsl(var(--cms-background)) 0%, hsl(220 35% 6%) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stars-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, hsl(var(--cms-primary)), transparent),
+      radial-gradient(2px 2px at 40px 70px, hsl(var(--cms-primary)), transparent),
+      radial-gradient(1px 1px at 90px 40px, hsl(var(--cms-primary)), transparent),
+      radial-gradient(1px 1px at 130px 80px, hsl(var(--cms-primary)), transparent),
+      radial-gradient(2px 2px at 160px 30px, hsl(var(--cms-primary)), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: sparkle 8s linear infinite;
+    opacity: 0.3;
+  }
+
+  @keyframes sparkle {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(200px); }
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--cms-surface));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--cms-border));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--cms-primary));
+  }
+}
+
+/* Component Utilities */
+@layer components {
+  .cms-card {
+    @apply bg-cms-surface border border-cms-border rounded-lg p-6;
+  }
+  
+  .cms-button-primary {
+    @apply bg-cms-primary text-cms-primary-foreground hover:bg-cms-primary-dark;
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
+    @apply shadow-lg hover:shadow-xl;
+  }
+  
+  .cms-button-secondary {
+    @apply bg-cms-surface-elevated text-cms-text-primary hover:bg-cms-hover;
+    @apply border border-cms-border px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  }
+  
+  .cms-input {
+    @apply bg-cms-input-bg border border-cms-input-border text-cms-text-primary;
+    @apply px-4 py-3 rounded-lg focus:border-cms-input-focus focus:ring-1 focus:ring-cms-input-focus;
+    @apply placeholder:text-cms-text-muted transition-all duration-200;
+  }
+  
+  .cms-sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 text-cms-text-secondary;
+    @apply hover:bg-cms-sidebar-hover hover:text-cms-text-primary;
+    @apply rounded-lg transition-all duration-200 cursor-pointer;
+  }
+  
+  .cms-sidebar-item.active {
+    @apply bg-cms-primary text-cms-primary-foreground;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
