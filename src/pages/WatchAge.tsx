@@ -23,16 +23,42 @@ export const WatchAge = () => {
 
     const [newRating, setNewRating] = useState("");
     const [newDescription, setNewDescription] = useState("");
+    const [editingId, setEditingId] = useState<string | null>(null);
 
-    // Add new age rating
-    const handleAddAgeRating = () => {
+    // Handle edit click
+    const handleEditClick = (rating: AgeRating) => {
+        setEditingId(rating.id);
+        setNewRating(rating.name);
+        setNewDescription(rating.description);
+    };
+
+    // Handle cancel edit
+    const handleCancelEdit = () => {
+        setEditingId(null);
+        setNewRating("");
+        setNewDescription("");
+    };
+
+    // Add or update age rating
+    const handleAddOrUpdateRating = () => {
         if (newRating.trim() && newDescription.trim()) {
-            const newAgeRating: AgeRating = {
-                id: (ageRatings.length + 1).toString(),
-                name: newRating,
-                description: newDescription,
-            };
-            setAgeRatings([...ageRatings, newAgeRating]);
+            if (editingId) {
+                // Update existing rating
+                setAgeRatings(prev => prev.map(rating =>
+                    rating.id === editingId
+                        ? { ...rating, name: newRating, description: newDescription }
+                        : rating
+                ));
+                setEditingId(null);
+            } else {
+                // Add new rating
+                const newAgeRating: AgeRating = {
+                    id: (ageRatings.length + 1).toString(),
+                    name: newRating,
+                    description: newDescription,
+                };
+                setAgeRatings([...ageRatings, newAgeRating]);
+            }
             setNewRating("");
             setNewDescription("");
         }
@@ -41,6 +67,9 @@ export const WatchAge = () => {
     // Delete age rating
     const handleDeleteRating = (id: string) => {
         setAgeRatings(ageRatings.filter(rating => rating.id !== id));
+        if (editingId === id) {
+            handleCancelEdit();
+        }
     };
 
     return (
@@ -60,8 +89,8 @@ export const WatchAge = () => {
                 {/* Add New Watch Age Section */}
                 <Card className="relative z-20 p-6 bg-[#1c2632] border-[#364253]">
                     <h2 className="text-xl font-semibold text-yellow-400 mb-4 flex items-center">
-                        <Plus className="w-5 h-5 mr-2" />
-                        Add New Watch Age
+                        {editingId ? <Pencil className="w-5 h-5 mr-2" /> : <Plus className="w-5 h-5 mr-2" />}
+                        {editingId ? 'Edit Watch Age Rating' : 'Add New Watch Age'}
                     </h2>
 
                     <div className="space-y-4">
@@ -85,13 +114,24 @@ export const WatchAge = () => {
                             />
                         </div>
 
-                        <Button
-                            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium"
-                            onClick={handleAddAgeRating}
-                        >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Add Age Rating
-                        </Button>
+                        <div className="flex gap-2">
+                            <Button
+                                className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-medium"
+                                onClick={handleAddOrUpdateRating}
+                            >
+                                {editingId ? <Pencil className="w-4 h-4 mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
+                                {editingId ? 'Update Age Rating' : 'Add Age Rating'}
+                            </Button>
+                            {editingId && (
+                                <Button
+                                    variant="outline"
+                                    className="border-[#364253] text-gray-200 hover:bg-[#1c2632]"
+                                    onClick={handleCancelEdit}
+                                >
+                                    Cancel
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </Card>
 
@@ -106,7 +146,8 @@ export const WatchAge = () => {
                         {ageRatings.map((rating) => (
                             <Card
                                 key={rating.id}
-                                className="group relative bg-[#1c2632] border-[#364253] p-4 hover:bg-[#1c2632]/80"
+                                className={`group relative bg-[#1c2632] border-[#364253] p-4 hover:bg-[#1c2632]/80 
+                                    ${editingId === rating.id ? 'ring-2 ring-yellow-400' : ''}`}
                             >
                                 <div className="space-y-2">
                                     <div className="flex items-start justify-between">
@@ -115,7 +156,9 @@ export const WatchAge = () => {
                                             <Button
                                                 size="sm"
                                                 variant="ghost"
-                                                className="text-yellow-400 hover:text-yellow-500 hover:bg-[#131920]"
+                                                className={`text-yellow-400 hover:text-yellow-500 hover:bg-[#131920] 
+                                                    ${editingId === rating.id ? 'bg-[#131920]' : ''}`}
+                                                onClick={() => handleEditClick(rating)}
                                             >
                                                 <Pencil className="w-4 h-4" />
                                             </Button>
