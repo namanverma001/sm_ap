@@ -8,6 +8,15 @@ import { UploadMovie } from "@/pages/UploadMovie";
 import { UploadEpisode } from "@/pages/UploadEpisode";
 import { AllMovies } from "@/pages/AllMovies";
 import { AllCollections } from "@/pages/AllCollections";
+import { UpdateMovie } from "@/pages/UpdateMovie";
+import { ViewSeries } from "@/pages/ViewSeries";
+import { AddSeries } from "@/pages/AddSeries";
+import { AddCollection } from "@/pages/AddCollection";
+import { CategoryManagement } from "@/pages/CategoryManagement";
+import { WatchAge } from "@/pages/WatchAge";
+import { Genres } from "@/pages/Genres";
+import { ContentTypes } from "@/pages/ContentTypes";
+import { ApiTest } from "@/pages/ApiTest";
 
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,8 +41,17 @@ const Index = () => {
         <Route path="all-movies" element={<AllMovies />} />
         <Route path="all-collections" element={<AllCollections />} />
         <Route path="upload-movie" element={<UploadMovie />} />
+        <Route path="update-movie/:id" element={<UpdateMovie />} />
         <Route path="upload-episode" element={<UploadEpisode />} />
+        <Route path="view-series" element={<ViewSeries />} />
+        <Route path="add-series" element={<AddSeries />} />
+        <Route path="add-collection" element={<AddCollection />} />
         <Route path="upload-trailer" element={<UploadTrailer />} />
+        <Route path="categories" element={<CategoryManagement />} />
+        <Route path="watch-age" element={<WatchAge />} />
+        <Route path="genres" element={<Genres />} />
+        <Route path="content-types" element={<ContentTypes />} />
+        <Route path="api-test" element={<ApiTest />} />
       </Route>
     </Routes>
   );

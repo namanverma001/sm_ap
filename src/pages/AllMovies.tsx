@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Star, Clock, Plus } from "lucide-react";
+import { Star, Clock, Plus, User } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export const AllMovies = () => {
+  const navigate = useNavigate();
   const movies = [
     {
       id: 1,
@@ -28,13 +31,26 @@ export const AllMovies = () => {
 
   return (
     <div className="p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      {/* Header with User Menu */}
+      <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-cms-primary mb-2">All Movies</h1>
-          <p className="text-cms-text-secondary">Manage your movie collection</p>
+          <h1 className="text-3xl font-bold text-yellow-400 mb-2">All Movies</h1>
+          <p className="text-gray-400">Manage your movie collection</p>
         </div>
-        <Button className="cms-button">
+
+
+      </div>
+
+      {/* Upload New Movie Button */}
+      <div className="relative z-10">
+        <Button
+          type="button"
+          className="relative mb-8 bg-yellow-400 hover:bg-yellow-500 text-gray-900 cursor-pointer z-10"
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            navigate('update-movie/new');
+          }}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Upload New Movie
         </Button>
@@ -43,51 +59,50 @@ export const AllMovies = () => {
       {/* Movies Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {movies.map((movie) => (
-          <Card key={movie.id} className="cms-card group hover:scale-105 transition-transform duration-300">
-            <div className="aspect-[2/3] bg-cms-card-muted rounded-lg mb-4 overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-cms-card-muted to-cms-card-muted/50 flex items-center justify-center">
-                <div className="text-cms-text-muted">Movie Poster</div>
-              </div>
+          <div key={movie.id} className="relative overflow-hidden rounded-lg bg-[#1c2632] border border-[#364253]">
+            {/* Movie Thumbnail */}
+            <div className="aspect-video w-full overflow-hidden bg-[#242f3d]">
+              <img
+                src={movie.poster}
+                alt={movie.title}
+                className="w-full h-full object-cover"
+              />
             </div>
-            
-            <div className="space-y-3">
+
+            {/* Content */}
+            <div className="p-4">
               {/* Rating and Duration */}
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 text-cms-primary fill-current" />
-                  <span className="text-cms-primary font-medium">{movie.rating}</span>
+                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                  <span className="text-gray-200">{movie.rating}</span>
                 </div>
-                <div className="flex items-center space-x-1 text-cms-text-secondary">
+                <div className="flex items-center space-x-1 text-gray-400">
                   <Clock className="w-4 h-4" />
                   <span>{movie.duration} mins</span>
                 </div>
               </div>
 
-              {/* Title */}
-              <h3 className="font-bold text-cms-text text-lg leading-tight line-clamp-2">
-                {movie.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-cms-text-secondary text-sm line-clamp-2">
-                {movie.description}
-              </p>
+              {/* Title and Description */}
+              <h3 className="text-lg font-semibold text-gray-200 mb-2">{movie.title}</h3>
+              <p className="text-sm text-gray-400 mb-3">{movie.description}</p>
 
               {/* Genre and Year */}
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-cms-primary font-medium">Genre: {movie.genre}</span>
-                <span className="text-cms-text-secondary">{movie.year}</span>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-yellow-400 text-sm">Genre: {movie.genre}</span>
+                <span className="text-gray-400 text-sm">{movie.year}</span>
               </div>
 
               {/* View Details Button */}
-              <Button 
-                variant="outline" 
-                className="w-full cms-button-outline mt-4 group-hover:bg-cms-primary group-hover:text-black group-hover:border-cms-primary transition-colors"
+              <Button
+                className="w-full bg-[#363f4c] hover:bg-[#4a5563] text-gray-200"
+                variant="secondary"
+                onClick={() => navigate(`/movie/${movie.id}/details`)}
               >
                 View Details
               </Button>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

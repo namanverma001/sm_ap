@@ -15,7 +15,11 @@ import {
   List,
   ChevronDown,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  Monitor,
+  Crown,
+  Heart,
+  Network
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +28,7 @@ interface SidebarItem {
   label: string;
   icon: React.ElementType;
   path?: string;
+  description?: string;
   children?: SidebarItem[];
 }
 
@@ -33,12 +38,13 @@ const sidebarItems: SidebarItem[] = [
     label: "CONTENT MANAGEMENT",
     icon: Grid3x3,
     children: [
-      { id: "browse", label: "Browse Content", icon: Grid3x3, path: "/browse" },
-      { id: "all-movies", label: "All Movies", icon: Film, path: "/all-movies" },
-      { id: "all-collections", label: "All Collections", icon: Folder, path: "/all-collections" },
-      { id: "upload-movie", label: "Upload Movie", icon: Upload, path: "/upload-movie" },
-      { id: "upload-episode", label: "Upload Episode", icon: Tv, path: "/upload-episode" },
-      { id: "upload-trailer", label: "Upload Trailer", icon: Upload, path: "/upload-trailer" },
+      { id: "browse", label: "Browse Content", icon: Grid3x3, path: "/browse", description: "View all content" },
+      { id: "upload-trailer", label: "Upload Trailer", icon: Upload, path: "/upload-trailer", description: "Add new trailers" },
+      { id: "upload-movie", label: "Upload Movie", icon: Upload, path: "/upload-movie", description: "Add new movies" },
+      { id: "upload-episode", label: "Upload Episode", icon: Tv, path: "/upload-episode", description: "Add TV episodes" },
+      { id: "view-movies", label: "View Movies", icon: Film, path: "/all-movies", description: "Manage movies" },
+      { id: "view-series", label: "View Series", icon: Play, path: "/view-series", description: "Manage TV series" },
+      { id: "view-collections", label: "View Collections", icon: Folder, path: "/all-collections", description: "Manage collections" },
     ]
   },
   {
@@ -46,10 +52,11 @@ const sidebarItems: SidebarItem[] = [
     label: "SETTINGS",
     icon: Settings,
     children: [
-      { id: "categories", label: "Categories", icon: Tags, path: "/categories" },
-      { id: "watch-age", label: "Watch Age", icon: Clock, path: "/watch-age" },
-      { id: "genres", label: "Genres", icon: List, path: "/genres" },
-      { id: "content-types", label: "Content Types", icon: FileVideo, path: "/content-types" },
+      { id: "categories", label: "Categories", icon: Tags, path: "/categories", description: "Manage content categories" },
+      { id: "watch-age", label: "Watch Age", icon: Clock, path: "/watch-age", description: "Age restrictions and ratings" },
+      { id: "genres", label: "Genres", icon: List, path: "/genres", description: "Content genres and themes" },
+      { id: "content-types", label: "Content Types", icon: FileVideo, path: "/content-types", description: "Types of media content" },
+      { id: "api-test", label: "API Test", icon: Monitor, path: "/api-test", description: "Test API connections" }
     ]
   }
 ];
@@ -61,11 +68,11 @@ interface AdminSidebarProps {
 
 export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
   const location = useLocation();
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(["content"]);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(["content", "settings"]);
 
   const toggleGroup = (groupId: string) => {
-    setExpandedGroups(prev => 
-      prev.includes(groupId) 
+    setExpandedGroups(prev =>
+      prev.includes(groupId)
         ? prev.filter(id => id !== groupId)
         : [...prev, groupId]
     );
@@ -77,12 +84,12 @@ export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
     <>
       {/* Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-cms-shadow/50 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
-      
+
       {/* Sidebar */}
       <aside className={`
         fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-cms-sidebar-bg border-r border-cms-border
@@ -107,6 +114,15 @@ export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
 
           {/* Navigation Items */}
           <nav className="space-y-2">
+            {/* Glowbal Network Button */}
+            <Button
+              variant="outline"
+              className="w-full h-12 mb-4 border border-[#364253] rounded-lg bg-transparent text-gray-400 hover:bg-[#1c2632] hover:text-gray-300 transition-colors"
+              onClick={() => { }}
+            >
+              Glowbal Network
+            </Button>
+
             {sidebarItems.map((item) => (
               <div key={item.id}>
                 {/* Group Header */}
@@ -136,7 +152,12 @@ export const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
                         `}
                       >
                         <child.icon className="w-4 h-4" />
-                        <span>{child.label}</span>
+                        <div className="flex flex-col">
+                          <span>{child.label}</span>
+                          {child.description && (
+                            <span className="text-xs text-cms-text-muted">{child.description}</span>
+                          )}
+                        </div>
                       </Link>
                     ))}
                   </div>
