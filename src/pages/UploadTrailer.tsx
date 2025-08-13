@@ -96,13 +96,13 @@ export const UploadTrailer = () => {
             {/* Rating Slider */}
             <div>
               <label className="block text-sm font-medium text-cms-primary mb-2">
-                Average Rating (1-10)
+                Average Rating (1-5)
               </label>
               <div className="px-3">
                 <Slider
                   value={rating}
                   onValueChange={setRating}
-                  max={10}
+                  max={5}
                   min={1}
                   step={0.1}
                   className="w-full"
@@ -113,7 +113,7 @@ export const UploadTrailer = () => {
                     <Star className="w-3 h-3 fill-cms-primary text-cms-primary" />
                     {rating[0]}
                   </span>
-                  <span>10</span>
+                  <span>5</span>
                 </div>
               </div>
             </div>
@@ -150,7 +150,7 @@ export const UploadTrailer = () => {
                 </Select>
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-cms-primary mb-2">Content Type</label>
                 <Select>
                   <SelectTrigger className="cms-input">
@@ -162,13 +162,13 @@ export const UploadTrailer = () => {
                     <SelectItem value="behind-scenes">Behind the Scenes</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
               <div>
-                <label className="block text-sm font-medium text-cms-primary mb-2">Release Type</label>
+                <label className="block text-sm font-medium text-cms-primary mb-2">Category</label>
                 <Select>
                   <SelectTrigger className="cms-input">
-                    <SelectValue placeholder="Select Release Type" />
+                    <SelectValue placeholder="Select Category" />
                   </SelectTrigger>
                   <SelectContent className="bg-cms-surface border-cms-border">
                     <SelectItem value="theatrical">Theatrical</SelectItem>

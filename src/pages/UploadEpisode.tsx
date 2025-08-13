@@ -22,7 +22,7 @@ export const UploadEpisode = () => {
       </div>
 
       <div className="w-full max-w-4xl">
-        <Card className="cms-card">
+        <Card className="cms-card p-6 border-2 border-cms-border rounded-lg shadow-lg">
           <form className="space-y-6">
             {/* Episode Number and Title */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

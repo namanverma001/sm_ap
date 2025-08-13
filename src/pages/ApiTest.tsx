@@ -38,6 +38,24 @@ export const ApiTest = () => {
             error: "Auth endpoint temporarily not found (404)"
         },
         {
+            name: "Movies",
+            status: "ready",
+            count: 0,
+            endpoint: "GET/POST /api/v1/admin/movies",
+        },
+        {
+            name: "Series",
+            status: "ready",
+            count: 0,
+            endpoint: "GET/POST /api/v1/admin/series",
+        },
+        {
+            name: "Episodes",
+            status: "ready",
+            count: 0,
+            endpoint: "GET/POST /api/v1/admin/episodes",
+        },
+        {
             name: "Trailers",
             status: "failed",
             count: 0,
@@ -61,16 +79,8 @@ export const ApiTest = () => {
             status: "ready",
             count: 0,
             endpoint: "GET /api/v1/admin/age"
-        },
-        {
-            name: "Content Types",
-            status: "ready",
-            count: 0,
-            endpoint: "GET /api/v1/admin/contents"
         }
-    ]);
-
-    const [systemStatus, setSystemStatus] = useState<SystemStatus>({
+    ]); const [systemStatus, setSystemStatus] = useState<SystemStatus>({
         apiBaseUrl: { status: "connected" },
         authentication: { status: "unavailable" },
         contentManagement: { status: "operational" },
@@ -78,24 +88,55 @@ export const ApiTest = () => {
     });
 
     // Function to test authentication endpoint
-    const testAuth = async () => {
+    const testEndpoint = async (name: string) => {
         try {
-            // Simulating API call
+            // Simulating API call with loading state
             setEndpoints(prev => prev.map(ep =>
-                ep.name === "Authentication"
-                    ? { ...ep, status: "ready", error: undefined }
+                ep.name === name
+                    ? { ...ep, status: "unavailable", error: "Testing endpoint..." }
                     : ep
             ));
-            setSystemStatus(prev => ({
-                ...prev,
-                authentication: { status: "available" }
-            }));
+
+            // Simulate API request
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Randomly succeed or fail for demonstration
+            const success = Math.random() > 0.3;
+
+            if (success) {
+                setEndpoints(prev => prev.map(ep =>
+                    ep.name === name
+                        ? {
+                            ...ep,
+                            status: "ready",
+                            error: undefined,
+                            count: Math.floor(Math.random() * 50) + 1 // Random count between 1-50
+                        }
+                        : ep
+                ));
+
+                if (name === "Authentication") {
+                    setSystemStatus(prev => ({
+                        ...prev,
+                        authentication: { status: "available" }
+                    }));
+                }
+            } else {
+                throw new Error(`${name} endpoint test failed`);
+            }
         } catch (error) {
             setEndpoints(prev => prev.map(ep =>
-                ep.name === "Authentication"
-                    ? { ...ep, status: "failed", error: "Authentication failed" }
+                ep.name === name
+                    ? { ...ep, status: "failed", error: error.message || `${name} test failed` }
                     : ep
             ));
+
+            if (name === "Authentication") {
+                setSystemStatus(prev => ({
+                    ...prev,
+                    authentication: { status: "unavailable" }
+                }));
+            }
         }
     };
 
@@ -164,6 +205,12 @@ export const ApiTest = () => {
         switch (name) {
             case "Authentication":
                 return <User className="w-5 h-5" />;
+            case "Movies":
+                return <Film className="w-5 h-5" />;
+            case "Series":
+                return <Play className="w-5 h-5" />;
+            case "Episodes":
+                return <Database className="w-5 h-5" />;
             case "Trailers":
                 return <Play className="w-5 h-5" />;
             case "Categories":
@@ -172,8 +219,6 @@ export const ApiTest = () => {
                 return <Film className="w-5 h-5" />;
             case "Age Ratings":
                 return <Clock className="w-5 h-5" />;
-            case "Content Types":
-                return <Database className="w-5 h-5" />;
             default:
                 return <AlertCircle className="w-5 h-5" />;
         }
@@ -238,19 +283,7 @@ export const ApiTest = () => {
 
                         <Button
                             className="w-full bg-yellow-400 hover:bg-yellow-500 text-black"
-                            onClick={() => {
-                                switch (endpoint.name) {
-                                    case "Authentication":
-                                        testAuth();
-                                        break;
-                                    case "Categories":
-                                        testCategoryCRUD();
-                                        break;
-                                    case "Genres":
-                                        testGenreCRUD();
-                                        break;
-                                }
-                            }}
+                            onClick={() => testEndpoint(endpoint.name)}
                         >
                             {endpoint.name === "Authentication" ? "Test Auth" :
                                 endpoint.name === "Categories" ? "Test Category CRUD" :

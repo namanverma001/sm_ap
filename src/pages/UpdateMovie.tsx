@@ -114,13 +114,13 @@ export const UpdateMovie = () => {
                         {/* Rating Slider */}
                         <div>
                             <label className="block text-cms-primary font-medium mb-3">
-                                Average Rating (1-10)
+                                Average Rating (1-5)
                             </label>
                             <div className="flex items-center space-x-4">
                                 <Slider
                                     value={rating}
                                     onValueChange={setRating}
-                                    max={10}
+                                    max={5}
                                     min={1}
                                     step={0.1}
                                     className="flex-1"
@@ -182,10 +182,10 @@ export const UpdateMovie = () => {
                             </div>
 
                             <div>
-                                <label className="block text-cms-primary font-medium mb-2">Release Type</label>
+                                <label className="block text-cms-primary font-medium mb-2">Category</label>
                                 <Select>
                                     <SelectTrigger className="cms-select">
-                                        <SelectValue placeholder="Select Release Type" />
+                                        <SelectValue placeholder="Select Category" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="theatrical">Theatrical</SelectItem>
