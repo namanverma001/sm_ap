@@ -31,26 +31,20 @@ export const ViewSeries = () => {
 
     return (
         <div className="p-6">
-            {/* Header */}
+
+            {/* Header with Upload Webseries Button */}
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h1 className="text-3xl font-bold text-yellow-400 mb-2">All Series</h1>
                     <p className="text-gray-400">Manage your TV series collection</p>
                 </div>
-            </div>
-
-            {/* Add New Series Button */}
-            <div className="relative z-10">
                 <Button
                     type="button"
-                    className="relative mb-8 bg-yellow-400 hover:bg-yellow-500 text-gray-900 cursor-pointer z-10"
-                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.preventDefault();
-                        navigate('/add-series');
-                    }}
+                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 cursor-pointer"
+                    onClick={() => navigate('/upload-content?type=webseries')}
                 >
                     <Plus className="w-4 h-4 mr-2" />
-                    Add New Series
+                    Upload Webseries
                 </Button>
             </div>
 

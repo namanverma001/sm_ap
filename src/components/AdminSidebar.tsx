@@ -39,9 +39,8 @@ const sidebarItems: SidebarItem[] = [
     icon: Grid3x3,
     children: [
       { id: "browse", label: "Browse Content", icon: Grid3x3, path: "/browse", description: "View all content" },
-      { id: "upload-trailer", label: "Upload Trailer", icon: Upload, path: "/upload-trailer", description: "Add new trailers" },
-      { id: "upload-movie", label: "Upload Movie", icon: Upload, path: "/upload-movie", description: "Add new movies" },
-      { id: "upload-episode", label: "Upload Episode", icon: Tv, path: "/upload-episode", description: "Add TV episodes" },
+      { id: "upload-content", label: "Upload Content", icon: Upload, path: "/upload-content", description: "Add new content (movie, webseries, episode)" },
+      { id: "upload-trailer", label: "Upload Trailer", icon: FileVideo, path: "/upload-trailer", description: "Add new trailers" },
       { id: "view-movies", label: "View Movies", icon: Film, path: "/all-movies", description: "Manage movies" },
       { id: "view-series", label: "View Series", icon: Play, path: "/view-series", description: "Manage TV series" },
       { id: "view-collections", label: "View Collections", icon: Folder, path: "/all-collections", description: "Manage collections" },
